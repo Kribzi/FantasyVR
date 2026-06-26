@@ -38,6 +38,7 @@ where players hang out before the next match.
 | [06_QuestPublishing.md](06_QuestPublishing.md) | Meta Quest Store build/perf/submission checklist + Steam/PCVR notes. |
 | [07_Roadmap.md](07_Roadmap.md) | Milestone backlog. M1 = core combat loop. |
 | [08_CodingConventions.md](08_CodingConventions.md) | Project code conventions (and why the global ECS rules do not apply here). |
+| [09_M1_Implementation_Handoff.md](09_M1_Implementation_Handoff.md) | Continuity snapshot: what M1 built, scene wiring, build state, known issues to debug, MCP workflow notes. |
 
 ## Locked decisions (do not relitigate without an explicit request)
 

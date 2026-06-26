@@ -10,26 +10,31 @@ polish, and shipping. Each milestone lists concrete tasks. Check items off as co
 - [x] Code scaffold: `Assets/Game/` folders + `FantasyVR.Game.asmdef`.
 - [ ] (Recommended next) Initialize git and commit the template + docs as a baseline.
 
-## M1 - Core combat loop (next prompt) - PRIORITY
+## M1 - Core combat loop - IMPLEMENTED (device build in progress)
 
 Goal: in VR, the skeleton rises, objects fly in, slicing with both hands deals combo-scaled damage,
 potions heal, missing is harmless, the enemy dies, a scoreboard appears.
 
-- [ ] Config ScriptableObjects: `CombatConfig`, `EnemyConfig`, `ComboConfig` (+ lane layout).
-- [ ] `BladeController` + `Blade`: bind to local rig hands/controllers, compute velocity, blade
+See [09_M1_Implementation_Handoff.md](09_M1_Implementation_Handoff.md) for the full snapshot.
+
+- [x] Config ScriptableObjects: `CombatConfig`, `EnemyConfig`, `ComboConfig` (+ `LaneLayout`).
+- [x] `BladeController` + `Blade`: bind to local rig hands/controllers, compute velocity, blade
       collider + trail + haptics.
-- [ ] `SliceableObject`: trigger detection, speed gating, optional required angle, slice VFX, pooled.
-- [ ] `PotionFlask`: heal-on-slice variant.
-- [ ] `ObjectSpawner` + `SliceablePooler`/`PotionPooler` (subclass `XRMultiplayer.Pooler`): lane
+- [x] `SliceableObject`: trigger detection, speed gating, optional required angle, pooled. (slice VFX
+      deferred to M2)
+- [x] `PotionFlask`: heal-on-slice variant.
+- [x] `ObjectSpawner` + `SliceablePooler`/`PotionPooler` (subclass `XRMultiplayer.Pooler`): lane
       spawning, difficulty ramp.
-- [ ] `ComboSystem` + `ScoreTracker` + `CombatResult`.
-- [ ] `PlayerHealth`.
-- [ ] `EnemySkeleton`: rise/climb intro, HP, hit reaction, death.
-- [ ] `CombatDirector`: orchestrate the encounter end-to-end.
-- [ ] Minimal in-combat HUD (enemy HP, combo/multiplier).
-- [ ] Minimal `ScoreboardUI` with Play Again / Return to Town buttons (Town can be a stub).
-- [ ] Build a Combat area in `SampleScene`; wire prefabs; play on device.
-- [ ] First tuning pass (slice speed threshold, spawn rates, combo tiers).
+- [x] `ComboSystem` + `ScoreTracker` + `CombatResult`.
+- [x] `PlayerHealth`.
+- [x] `EnemySkeleton`: rise/climb intro, HP, hit reaction, death.
+- [x] `CombatDirector`: orchestrate the encounter end-to-end.
+- [x] Minimal in-combat HUD (enemy HP, combo/multiplier, score, player HP).
+- [x] Minimal `ScoreboardUI` with Play Again / Return to Town buttons (Town is a stub).
+- [x] Built a Combat area in `SampleScene`; wired prefabs. Verified in-editor Play mode.
+- [~] Play on device - **blocked**: first Android Build And Run failed on an OpenXR Project Validation
+      NRE; needs fixing (see doc 09 "Immediate next actions").
+- [ ] First tuning pass (slice speed threshold, spawn rates, combo tiers) - after it runs on device.
 
 Acceptance: see `04_CombatSystem.md` "What M1 must deliver".
 

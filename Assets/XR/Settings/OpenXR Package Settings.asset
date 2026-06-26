@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6096094d69d82cc40947df806f66ab34, type: 3}
   m_Name: OpenXRCompositionLayersFeature Android
   m_EditorClassIdentifier: Unity.XR.OpenXR::UnityEngine.XR.OpenXR.Features.CompositionLayers.OpenXRCompositionLayersFeature
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Composition Layers Support
   version: 1.0.0
   featureIdInternal: com.unity.openxr.feature.compositionlayers
@@ -569,7 +569,7 @@ MonoBehaviour:
   nameUi: 'Android XR: AR Anchor'
   version: 0.1.0
   featureIdInternal: com.unity.openxr.feature.arfoundation-androidxr-anchor
-  openxrExtensionStrings: XR_ANDROID_trackables
+  openxrExtensionStrings: XR_ANDROID_trackables XR_ANDROID_device_anchor_persistence
   company: Unity Technologies
   priority: 0
   targetOpenXRApiVersion: 
@@ -836,18 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   features:
   - {fileID: 9092602594592112781}
-  - {fileID: -5077183377261033812}
-  - {fileID: -8430203353196680964}
   - {fileID: -3650002114874021638}
-  - {fileID: 7757228210764622447}
-  - {fileID: -1151503869017326080}
-  - {fileID: -8892803349920734016}
   - {fileID: -3921240277962755209}
-  - {fileID: 2264785025553861769}
-  - {fileID: 738962359154967821}
-  - {fileID: 8968582680021954688}
-  - {fileID: 88000677591791368}
-  - {fileID: -7393226208139287900}
   - {fileID: -1334040874670967994}
   - {fileID: 2123424781130391193}
   - {fileID: -8901900931313660571}
@@ -1265,12 +1255,12 @@ MonoBehaviour:
     m_List: 00000000
   m_depthSubmissionMode: 0
   m_spacewarpMotionVectorTextureFormat: 0
-  m_optimizeBufferDiscards: 0
+  m_optimizeBufferDiscards: 1
   m_symmetricProjection: 0
   m_optimizeMultiviewRenderRegions: 0
   m_multiviewRenderRegionsOptimizationMode: 0
   m_hasMigratedMultiviewRenderRegionSetting: 1
-  m_foveatedRenderingApi: 1
+  m_foveatedRenderingApi: 0
   m_useOpenXRPredictedTime: 0
 --- !u!114 &3738314665178099856
 MonoBehaviour:
@@ -1608,7 +1598,7 @@ MonoBehaviour:
   nameUi: 'Android XR: AR Anchor'
   version: 0.1.0
   featureIdInternal: com.unity.openxr.feature.arfoundation-androidxr-anchor
-  openxrExtensionStrings: XR_ANDROID_trackables
+  openxrExtensionStrings: XR_ANDROID_trackables XR_ANDROID_device_anchor_persistence
   company: Unity Technologies
   priority: 0
   targetOpenXRApiVersion: 
