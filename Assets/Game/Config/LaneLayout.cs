@@ -25,11 +25,12 @@ namespace FantasyVR.Config
         Lane[] m_Lanes =
         {
             // Three columns (left/centre/right) x two rows (waist/shoulder), enemy at +Z ~4.5m.
-            new Lane { spawnOffset = new Vector3(-0.6f, 1.1f, 4.0f), targetOffset = new Vector3(-0.45f, 1.0f, 0.35f) },
-            new Lane { spawnOffset = new Vector3( 0.0f, 1.2f, 4.0f), targetOffset = new Vector3( 0.0f, 1.1f, 0.35f) },
-            new Lane { spawnOffset = new Vector3( 0.6f, 1.1f, 4.0f), targetOffset = new Vector3( 0.45f, 1.0f, 0.35f) },
-            new Lane { spawnOffset = new Vector3(-0.5f, 1.5f, 4.0f), targetOffset = new Vector3(-0.4f, 1.45f, 0.35f) },
-            new Lane { spawnOffset = new Vector3( 0.5f, 1.5f, 4.0f), targetOffset = new Vector3( 0.4f, 1.45f, 0.35f) },
+            // Spawn heights sit ~20% above the reach targets so objects stream in slightly from above.
+            new Lane { spawnOffset = new Vector3(-0.6f, 1.32f, 4.0f), targetOffset = new Vector3(-0.45f, 1.0f, 0.35f) },
+            new Lane { spawnOffset = new Vector3( 0.0f, 1.44f, 4.0f), targetOffset = new Vector3( 0.0f, 1.1f, 0.35f) },
+            new Lane { spawnOffset = new Vector3( 0.6f, 1.32f, 4.0f), targetOffset = new Vector3( 0.45f, 1.0f, 0.35f) },
+            new Lane { spawnOffset = new Vector3(-0.5f, 1.8f, 4.0f), targetOffset = new Vector3(-0.4f, 1.45f, 0.35f) },
+            new Lane { spawnOffset = new Vector3( 0.5f, 1.8f, 4.0f), targetOffset = new Vector3( 0.4f, 1.45f, 0.35f) },
         };
 
         public int LaneCount => m_Lanes != null ? m_Lanes.Length : 0;

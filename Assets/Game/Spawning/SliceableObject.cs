@@ -49,6 +49,10 @@ namespace FantasyVR.Spawning
             m_Rigidbody = GetComponent<Rigidbody>();
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
+            // Drive motion through the physics system with interpolation so the rendered pose is
+            // smoothly blended every headset frame, even when the physics step and the (variable) VR
+            // frame rate disagree. Writing transform.position in Update() skips this and reads as judder.
+            m_Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
             if (m_Visual != null)
             {
@@ -63,7 +67,11 @@ namespace FantasyVR.Spawning
             bool requiresAngle, Vector3 requiredDir, float angleToleranceDeg)
         {
             m_Owner = owner;
+            // Teleport via the body (resets interpolation) so the object doesn't smear a streak from
+            // its previous pooled location to the spawn point on the first interpolated frame.
             transform.position = spawnPos;
+            if (m_Rigidbody != null)
+                m_Rigidbody.position = spawnPos;
 
             Vector3 toTarget = targetPos - spawnPos;
             float dist = toTarget.magnitude;
@@ -83,19 +91,27 @@ namespace FantasyVR.Spawning
 
         protected virtual void OnLaunched() { }
 
-        void Update()
+        void FixedUpdate()
         {
             if (m_Consumed) return;
 
-            float dt = Time.deltaTime;
-            transform.position += m_Velocity * dt;
-
-            if (m_Visual != null)
-                m_Visual.Rotate(Vector3.up, m_SpinSpeed * dt, Space.Self);
+            float dt = Time.fixedDeltaTime;
+            // MovePosition on an interpolated kinematic body lets Unity smooth the render pose between
+            // physics steps; this is the "best way to travel" for a moving collider that needs triggers.
+            m_Rigidbody.MovePosition(m_Rigidbody.position + m_Velocity * dt);
 
             m_RemainingLife -= dt;
             if (m_RemainingLife <= 0f)
                 Expire();
+        }
+
+        void Update()
+        {
+            if (m_Consumed) return;
+
+            // Purely cosmetic spin on the visual child; the interpolated body handles smooth travel.
+            if (m_Visual != null)
+                m_Visual.Rotate(Vector3.up, m_SpinSpeed * Time.deltaTime, Space.Self);
         }
 
         void Expire()

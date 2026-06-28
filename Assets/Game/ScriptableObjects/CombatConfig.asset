@@ -98,7 +98,7 @@ MonoBehaviour:
   m_UltimateSlashHalfWidth: 0.45
   m_UltimateSlashYBottom: 1
   m_UltimateSlashYTop: 1.55
-  m_UltimateSlashSpawnZ: 4
+  m_UltimateSlashSpawnZ: 6
   m_UltimateSlashTargetZ: 0.35
   m_PlayerMaxHealth: 100
   m_PlayerStartHealth: 100

@@ -153,6 +153,37 @@ the player wants. Keep it tight; deep design lives in `Docs/01`-`08`, M1 details
 - **Faster combat:** `CombatConfig.asset` curves updated — orb speed `3.8 → 6.7 m/s` (was `2.2 → 4.0`),
   spawn interval `0.75 → 0.3 s` (was `1.1 → 0.45`). Gameplay feels significantly snappier.
 
+## Combat feel & VR setup (latest session)
+
+These are live in `Dungeon.unity` + the shared config assets (verified in-editor; not yet device-tested).
+
+- **Player moved back + projectiles fly longer.** `CombatRig` moved back 2 m (world `(-2,4,-15.69)`), the
+  XR rig `CharacterResetter.offlinePosition` moved with it to `(-2, 4.6, -15.69)`. The enemy stays pinned
+  at world `(-2,4,-22.19)` (local Z bumped `4.5 → 6.5`). `LaneLayout` spawn offsets and
+  `CombatConfig.m_UltimateSlashSpawnZ` were both extended `4.0 → 6.0` so objects still originate at the
+  enemy and travel the longer distance to the player (more reaction time).
+- **Player Y raised.** `offlinePosition.y` `4.2 → 4.6` (floor is `y≈4.0`, so the player now stands ~0.6 m
+  above it — a taller vantage). To re-tune height, change only `CharacterResetter.offlinePosition.y` on the
+  XR rig in `Dungeon.unity`. (On device, real head-tracking height adds on top of this base.)
+- **Locomotion disabled, roomscale kept.** Under the XR rig `Locomotion`, the `Move`, `Turn`, and `Climb`
+  GameObjects are deactivated (no stick movement/turning). `Teleportation` is **kept active on purpose** —
+  `CharacterResetter` finds its `TeleportationProvider` via `GetComponentInChildren` (active-only) to teleport
+  the player to spawn, so disabling it NREs and breaks spawning. The dungeon has **0 TeleportationAreas/
+  Anchors**, so the player still can't teleport anywhere. `Gravity` stays on. Roomscale head/hand tracking is
+  untouched, so physical walking still maps into the game.
+- **Misses now hurt (player can die).** A damage object that reaches the player unsliced deals
+  `CombatConfig.m_PlayerMissDamage` (default `10`). At 0 HP, `CombatDirector` stops the spawner and shows the
+  scoreboard (loss). Potions are still harmless to miss. (Verified: with no hand tracking in-editor, all
+  objects miss → player dies → scoreboard, no exceptions.) This also closes the M2 "player can't die" gap.
+- **Ultimate now telegraphs + has a focus window.** The ultimate is a coroutine in `ObjectSpawner`:
+  1) fires `OnUltimateTelegraph` → `EnemySkeleton.PlayAttack()` (plays the `Attack` state =
+  `Skeleton_Swordman_Frenzied_Slash`) and **pauses normal spawns**; 2) after
+  `CombatConfig.m_UltimateTelegraphLead` (0.9 s) launches the first slash wave; 3) second wave after
+  `m_UltimateSecondWaveDelay`; 4) normals resume after `m_UltimatePauseAfter` (1.0 s). So the player only
+  faces the slash formation during the ultimate. New animator state `Attack` (+ `Attack` trigger,
+  AnyState→Attack, Attack→Idle) added to `Assets/Game/Animation/EnemySkeleton.controller`;
+  `EnemySkeleton.m_AttackTrigger = "Attack"`.
+
 ## Reuse, don't reinvent (from template, per AGENTS.md)
 
 - `XRMultiplayer.Pooler` for all coin/object pooling. `XRMultiplayer.TextButton.UpdateButton` for buttons.

@@ -1,3 +1,4 @@
+using System;
 using FantasyVR.Combat;
 using FantasyVR.Scoring;
 using FantasyVR.UI;
@@ -61,15 +62,42 @@ namespace FantasyVR.Flow
                 m_Director.StartCombat();
         }
 
-        /// <summary>Show the post-combat scoreboard with the given result.</summary>
-        public void ShowScoreboard(CombatResult result)
+        /// <summary>Player died: show the FAILURE panel. Play Again retries the same enemy.</summary>
+        public void ShowFailure(CombatResult result)
         {
             State = GameState.Scoreboard;
 
             if (m_HudRoot != null)
                 m_HudRoot.SetActive(false);
             if (m_Scoreboard != null)
-                m_Scoreboard.Show(result, StartCombat, GoToTown);
+                m_Scoreboard.ShowFailure(result, StartCombat, GoToTown);
+        }
+
+        /// <summary>Enemy defeated: show the VICTORY banner. The single "Fight" button resumes the HUD
+        /// and runs <paramref name="onContinue"/> (advance to the next, harder enemy).</summary>
+        public void ShowVictory(CombatResult result, Action onContinue)
+        {
+            State = GameState.Scoreboard;
+
+            if (m_HudRoot != null)
+                m_HudRoot.SetActive(false);
+            if (m_Scoreboard != null)
+                m_Scoreboard.ShowVictory(result, () =>
+                {
+                    ResumeCombatUI();
+                    onContinue?.Invoke();
+                });
+        }
+
+        void ResumeCombatUI()
+        {
+            State = GameState.Combat;
+            if (m_Scoreboard != null)
+                m_Scoreboard.Hide();
+            if (m_CombatRoot != null)
+                m_CombatRoot.SetActive(true);
+            if (m_HudRoot != null)
+                m_HudRoot.SetActive(true);
         }
 
         /// <summary>Return to the town hub. Stubbed in M1: just restarts combat with a log.</summary>

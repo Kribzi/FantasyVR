@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LaneLayout
   m_EditorClassIdentifier: FantasyVR.Game::FantasyVR.Config.LaneLayout
   m_Lanes:
-  - spawnOffset: {x: -0.6, y: 1.1, z: 4}
+  - spawnOffset: {x: -0.6, y: 1.32, z: 6}
     targetOffset: {x: -0.45, y: 1, z: 0.35}
-  - spawnOffset: {x: 0, y: 1.2, z: 4}
+  - spawnOffset: {x: 0, y: 1.44, z: 6}
     targetOffset: {x: 0, y: 1.1, z: 0.35}
-  - spawnOffset: {x: 0.6, y: 1.1, z: 4}
+  - spawnOffset: {x: 0.6, y: 1.32, z: 6}
     targetOffset: {x: 0.45, y: 1, z: 0.35}
-  - spawnOffset: {x: -0.5, y: 1.5, z: 4}
+  - spawnOffset: {x: -0.5, y: 1.8, z: 6}
     targetOffset: {x: -0.4, y: 1.45, z: 0.35}
-  - spawnOffset: {x: 0.5, y: 1.5, z: 4}
+  - spawnOffset: {x: 0.5, y: 1.8, z: 6}
     targetOffset: {x: 0.4, y: 1.45, z: 0.35}
