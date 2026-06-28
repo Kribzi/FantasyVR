@@ -25,6 +25,16 @@ namespace FantasyVR.Enemy
         [SerializeField, Tooltip("Colour briefly applied on hit.")]
         Color m_HitFlashColor = Color.red;
 
+        [Header("Animation (optional)")]
+        [SerializeField, Tooltip("Animator on the rigged model. When set, the death animation plays instead of the placeholder fall tween.")]
+        Animator m_Animator;
+
+        [SerializeField, Tooltip("Trigger fired on death (must exist on the animator controller).")]
+        string m_DieTrigger = "Die";
+
+        [SerializeField, Tooltip("Trigger fired on each hit (optional; leave blank to skip).")]
+        string m_HitTrigger = "";
+
         /// <summary>Raised when the rise intro finishes and combat can begin.</summary>
         public event Action OnRiseComplete;
 
@@ -111,6 +121,9 @@ namespace FantasyVR.Enemy
             OnDamaged?.Invoke(Health, MaxHealth);
             TriggerHitFlash();
 
+            if (m_Animator != null && !string.IsNullOrEmpty(m_HitTrigger) && Health > 0f)
+                m_Animator.SetTrigger(m_HitTrigger);
+
             if (Health <= 0f)
                 Die();
         }
@@ -151,6 +164,17 @@ namespace FantasyVR.Enemy
         IEnumerator DeathRoutine()
         {
             float duration = m_Config != null ? m_Config.DeathDuration : 1.5f;
+
+            // With a rigged model, let the death animation carry the moment instead of the tween.
+            if (m_Animator != null && !string.IsNullOrEmpty(m_DieTrigger))
+            {
+                m_Animator.SetTrigger(m_DieTrigger);
+                yield return new WaitForSeconds(duration);
+                CurrentState = State.Dead;
+                OnDied?.Invoke();
+                yield break;
+            }
+
             Vector3 startLocal = m_Body.localPosition;
             float depth = m_Config != null ? m_Config.RiseDepth : 2f;
             Vector3 endLocal = startLocal + Vector3.down * depth;

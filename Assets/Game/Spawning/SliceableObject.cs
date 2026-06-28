@@ -38,6 +38,8 @@ namespace FantasyVR.Spawning
         float m_AngleToleranceDeg = 35f;
         float m_RemainingLife;
         bool m_Consumed;
+        Renderer m_VisualRenderer;
+        float m_VisualRadius = 0.09f;
 
         public virtual SliceableKind Kind => SliceableKind.Damage;
         public bool RequiresAngle => m_RequiresAngle;
@@ -47,6 +49,13 @@ namespace FantasyVR.Spawning
             m_Rigidbody = GetComponent<Rigidbody>();
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
+
+            if (m_Visual != null)
+            {
+                m_VisualRenderer = m_Visual.GetComponentInChildren<Renderer>();
+                if (m_VisualRenderer != null)
+                    m_VisualRadius = Mathf.Max(0.02f, m_VisualRenderer.bounds.extents.x);
+            }
         }
 
         /// <summary>Configure and start a flight. Called by the spawner on every launch.</summary>
@@ -120,6 +129,14 @@ namespace FantasyVR.Spawning
 
             m_Consumed = true;
             controller.PlaySliceHaptics();
+
+            // Split the orb into two physics halves along the cut for "sliced in two + fall" juice.
+            if (Kind == SliceableKind.Damage && SliceDebrisSystem.Instance != null)
+            {
+                Material mat = m_VisualRenderer != null ? m_VisualRenderer.sharedMaterial : null;
+                SliceDebrisSystem.Instance.Spawn(transform.position, controller.SliceDirection, m_Velocity, mat, m_VisualRadius);
+            }
+
             if (m_Owner != null)
                 // The combo bonus is only earned on objects that actually demanded a specific cut
                 // angle. A plain object reaching here was cut fine, but must not grant the angle bonus.

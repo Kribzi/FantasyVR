@@ -104,3 +104,15 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Third-party Asset Store packs (re-import from the .unitypackage on a fresh clone).
+# Kept out of the repo to avoid bloat; the imported folder and the raw download folder
+# are both ignored. The .unitypackage backups themselves are already ignored above.
+/[Aa]ssets/Fantastic Dungeon Pack/
+/[Aa]ssets/Fantastic Dungeon Pack.meta
+/[Aa]ssets/FANTASTIC - Dungeon Pack/
+/[Aa]ssets/FANTASTIC - Dungeon Pack.meta
+
+# Low Poly Skeleton Crew (BitGem). Re-download from the Asset Store on a fresh clone.
+/[Aa]ssets/BitGem/
+/[Aa]ssets/BitGem.meta

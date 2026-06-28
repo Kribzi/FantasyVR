@@ -1,0 +1,32 @@
+---
+description: Fast "build to headset" dev workflow for Quest (Android Build-And-Run via Unity MCP)
+alwaysApply: true
+---
+
+# Build to headset (fastest dev loop)
+
+When the user says "build to headset" / "build to quest" / "build it" (dev intent), do the
+**fastest incremental Build-And-Run** to the connected Quest. Do not ask which config; default to this.
+
+## Procedure
+1. Confirm the Quest is connected (only if a prior build failed to install):
+   `& "D:\UnityEditor\6000.4.2f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\platform-tools\adb.exe" devices`
+   (Quest 3 id `2G0YC5ZH1S0348`. Shell is PowerShell: call exes with `&`, separate cmds with `;`.)
+2. Only if `.cs` scripts changed this session, force a recompile first (else skip — recompiling is slow):
+   `refresh_unity` (force) and wait for `editor_state.isCompiling == false`. Skipping when scripts
+   changed causes "script class layout incompatible editor vs player".
+3. Trigger the build (async) via Unity MCP and poll `status` with the returned `job_id`:
+   `manage_build { action:"build", target:"android", output_path:"Builds/Android/FantasyVR.apk",
+   options:["auto_run","compress_lz4"] }`
+   - `auto_run` installs + launches on the headset automatically.
+4. Confirm success by the returned status and/or the APK timestamp at `Builds/Android/FantasyVR.apk`.
+
+## Keep it fast — do NOT
+- **Never pass `clean_build`** unless a build is genuinely broken (it wipes the IL2CPP/gradle cache → minutes slower).
+- **Never toggle the `development` flag or `scripting_backend`** between builds — switching busts the cache and forces a full rebuild. Pick one config (this one) and always reuse it.
+- **Don't change `output_path`** — same path reuses incremental artifacts.
+- Don't rebake lighting or switch platforms as part of a build.
+
+## Notes
+- The MCP link drops during the build/domain reload; wait and reconnect, then poll `status`.
+- Build scene order lives in Build Settings (boot scene = index 0, currently `Assets/Scenes/Dungeon.unity`).
